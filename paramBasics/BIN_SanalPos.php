@@ -1,27 +1,27 @@
 <?php
 /**
  * Created by Payfull.
- * Date: 10/16/2018
+ * Date: 10/18/2018
  */
+
 
 namespace param\paramBasics;
 
-
-class SHA2B64
+class BIN_SanalPos
 {
     public $G;//control and security object
-    public $Data;
+    public $BIN;//All BIN codes return if left blank. If posted full BIN returns information about the code.
 
     /**
-     * SHA2B64 constructor.
-     * @param $securityString
+     * BIN_SanalPos constructor.
+     * @param $BIN: card bin
      * @param $CLIENT_CODE: Terminal ID, It will be forwarded by param.
      * @param $CLIENT_USERNAME: User Name, It will be forwarded by param.
      * @param $CLIENT_PASSWORD: Password, It will be forwarded by param.
      */
-    public function __construct($securityString, $CLIENT_CODE, $CLIENT_USERNAME, $CLIENT_PASSWORD)
+    public function __construct($CLIENT_CODE, $CLIENT_USERNAME, $CLIENT_PASSWORD, $BIN)
     {
-        $this->Data = $securityString;
+        $this->BIN = $BIN;
         $this->G = new G($CLIENT_CODE, $CLIENT_USERNAME , $CLIENT_PASSWORD);
     }
 }

@@ -16,20 +16,20 @@ class SaleWithSavedCard extends Config
 {
     /**
      * Sale constructor.
+     * @param $clientCode: Terminal ID, It will be forwarded by param.
+     * @param $clientUsername: User Name, It will be forwarded by param.
+     * @param $clientPassword: Password, It will be forwarded by param.
+     * @param $guid: Key Belonging to Member Workplace
      * @param $mode: string value TEST/PROD
      */
-    public function __construct($mode)
+    public function __construct($clientCode, $clientUsername, $clientPassword, $guid, $mode)
     {
-        parent::__construct($mode);
+        parent::__construct($clientCode, $clientUsername, $clientPassword, $guid, $mode);
     }
 
     /**
      * send sale transaction
-     * @param $clientCode: Terminal ID, It will be forwarded by param.
-     * @param $clientUsername: User Name, It will be forwarded by param.
-     * @param $clientPassword: Password, It will be forwarded by param.
      * @param $vPosId: is the VirtualPOS_ID value of the Card Brand selected from the customer method.
-     * @param $guid: Key Belonging to Member Workplace
      * @param $receiverCardNumber: Card Number Belonging to Member Workplace
      * @param $savedCardGuid: GUID value that returns from KK_Saklama method
      * @param $cardHolderPhone: Credit Card holder GSM No, Without zero at the beginning (5xxxxxxxxx)
@@ -50,21 +50,21 @@ class SaleWithSavedCard extends Config
      * @param $cvc: CVC Code
      * @param $use3d: use 3d secure 1/0
      */
-    public function send($clientCode,$clientUsername,$clientPassword,$vPosId,$guid,$receiverCardNumber,$savedCardGuid,
+    public function send($vPosId,$receiverCardNumber,$savedCardGuid,
                          $cardHolderPhone,$failUrl,$successURL,$orderId,
                          $orderDescription,$installments,$total,$generalTotal,$transactionId,$ipAddress,
                          $referenceUrl,$extraData1,$extraData2,$extraData3,$extraData4,$cvc,$use3d)
     {
-        $client = new SoapClient($this->serviceUrl);
+        $client = new \SoapClient($this->serviceUrl);
         $use3d = ($use3d == True)?'NS':'';
 
-        $saleObj = new TP_Islem_Odeme_WKS($clientCode,$clientUsername,$clientPassword,$vPosId,$guid,$receiverCardNumber,
+        $saleObj = new TP_Islem_Odeme_WKS($this->clientCode,$this->clientUsername,$this->clientPassword,$vPosId,$this->guid,$receiverCardNumber,
             $savedCardGuid,$cardHolderPhone,$failUrl,$successURL,$orderId,
             $orderDescription,$installments,$total,$generalTotal,$transactionId,$ipAddress,
             $referenceUrl,$extraData1,$extraData2,$extraData3,$extraData4,$cvc,$use3d);
 
-        $securityString = $clientCode.$guid.$vPosId.$installments.$total.$generalTotal.$orderId.$failUrl.$successURL;
-        $shaString = new SHA2B64($securityString, $clientCode, $clientUsername, $clientPassword);
+        $securityString = $this->clientCode.$this->guid.$vPosId.$installments.$total.$generalTotal.$orderId.$failUrl.$successURL;
+        $shaString = new SHA2B64($securityString, $this->clientCode,$this->clientUsername,$this->clientPassword);
         $saleObj->Islem_Hash = $client->SHA2B64($shaString)->SHA2B64Result;
         $response = $client->TP_Islem_Odeme_WKS($saleObj);
     }

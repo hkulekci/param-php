@@ -14,20 +14,27 @@ class GetInstallmentPlanForMerchant extends Config
 {
     public $guid;//Key Belonging to Member Workplace
 
-    public function __construct($mode)
+    /**
+     * GetInstallmentPlanForMerchant constructor.
+     * @param $clientCode: Terminal ID, It will be forwarded by param.
+     * @param $clientUsername: User Name, It will be forwarded by param.
+     * @param $clientPassword: Password, It will be forwarded by param.
+     * @param $guid: Key Belonging to Member Workplace
+     * @param $mode: string value TEST/PROD
+     */
+    public function __construct($clientCode, $clientUsername, $clientPassword, $guid, $mode)
     {
-        parent::__construct($mode);
+        parent::__construct($clientCode, $clientUsername, $clientPassword, $guid, $mode);
     }
 
     /**
      * send request to get the installments plan list for Merchant
-     * @param $guid: Key Belonging to Member Workplace
      * @return array|bool
      */
-    public function send($guid)
+    public function send()
     {
-        $client = new SoapClient($this->serviceUrl);
-        $installmentsListObj = new TP_Ozel_Oran_Liste($guid);
+        $client = new \SoapClient($this->serviceUrl);
+        $installmentsListObj = new TP_Ozel_Oran_Liste($this->clientCode,$this->clientUsername,$this->clientPassword,$this->guid);
         $response = $client->TP_Ozel_Oran_Liste($installmentsListObj);
         if(isset($response->TP_Ozel_Oran_ListeResult) == False) return False;
 
