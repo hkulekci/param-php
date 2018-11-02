@@ -80,6 +80,7 @@ require_once('/path/to/param-php/src/loader.php');
 ``` 
 
 ```php
+    //parsing the results
     $paramResponse = $saleObj->parse();                    
 ```
 
