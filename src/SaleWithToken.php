@@ -1,15 +1,18 @@
 <?php
 /**
- * Created by Payfull.
- * Date: 10/29/2018
+ * Created by PhpStorm.
+ * User: mohmm
+ * Date: 10/17/2018
+ * Time: 5:16 PM
  */
 
 namespace param;
 
-use param\paramBasics\TP_Islem_Odeme_WNS;
+
+use param\paramBasics\TP_Islem_Odeme_WKS;
 use param\paramBasics\SHA2B64;
 
-class Sale extends Sale3d
+class SaleWithToken extends Sale
 {
     /**
      * Sale constructor.
@@ -27,11 +30,8 @@ class Sale extends Sale3d
     /**
      * send sale transaction
      * @param $vPosId: is the VirtualPOS_ID value of the Card Brand selected from the customer method.
-     * @param $cardHolder: Credit Card Holder
-     * @param $cardNumber: Credit Card Number
-     * @param $cardExpMonth: Last 2 digit Expiration month
-     * @param $cardExpYear: 4 digit Expiration Year
-     * @param $cvc: CVC Code
+     * @param $receiverCardNumber: Card Number Belonging to Member Workplace
+     * @param $savedCardGuid: GUID value that returns from KK_Saklama method
      * @param $cardHolderPhone: Credit Card holder GSM No, Without zero at the beginning (5xxxxxxxxx)
      * @param $failUrl: If the payment fails, page address to be redirected to
      * @param $successURL: If the payment is successful, page address to be redirected to
@@ -47,26 +47,26 @@ class Sale extends Sale3d
      * @param $extraData2: Extra Space 2
      * @param $extraData3: Extra Space 3
      * @param $extraData4: Extra Space 4
-     * @param $extraData5: Extra Space 5
+     * @param $cvc: CVC Code
+     * @param $use3d: use 3d secure 1/0
      */
-    public function send($vPosId,$cardHolder,$cardNumber,
-                         $cardExpMonth,$cardExpYear,$cvc,$cardHolderPhone,$failUrl,$successURL,$orderId,
+    public function sendWithToken($vPosId,$receiverCardNumber,$savedCardGuid,
+                         $cardHolderPhone,$failUrl,$successURL,$orderId,
                          $orderDescription,$installments,$total,$generalTotal,$transactionId,$ipAddress,
-                         $referenceUrl,$extraData1,$extraData2,$extraData3,$extraData4,$extraData5)
+                         $referenceUrl,$extraData1,$extraData2,$extraData3,$extraData4,$cvc,$use3d)
     {
-        $this->transactionId = $transactionId;
         $client = new \SoapClient($this->serviceUrl);
+        $use3d = ($use3d == True)?'NS':'';
 
-        $saleObj = new TP_Islem_Odeme_WNS($this->clientCode,$this->clientUsername,$this->clientPassword,$vPosId,$this->guid,
-            $cardHolder,$cardNumber,$cardExpMonth,$cardExpYear,$cvc,$cardHolderPhone,$failUrl,$successURL,$orderId,
+        $saleObj = new TP_Islem_Odeme_WKS($this->clientCode,$this->clientUsername,$this->clientPassword,$vPosId,$this->guid,$receiverCardNumber,
+            $savedCardGuid,$cardHolderPhone,$failUrl,$successURL,$orderId,
             $orderDescription,$installments,$total,$generalTotal,$transactionId,$ipAddress,
-            $referenceUrl,$extraData1,$extraData2,$extraData3,$extraData4,$extraData5);
-
+            $referenceUrl,$extraData1,$extraData2,$extraData3,$extraData4,$cvc,$use3d);
 
         $securityString = $this->clientCode.$this->guid.$vPosId.$installments.$total.$generalTotal.$orderId.$failUrl.$successURL;
-        $shaString = new SHA2B64($securityString, $this->clientCode, $this->clientUsername, $this->clientPassword);
+        $shaString = new SHA2B64($securityString, $this->clientCode,$this->clientUsername,$this->clientPassword);
         $saleObj->Islem_Hash = $client->SHA2B64($shaString)->SHA2B64Result;
-        $this->response = $client->TP_Islem_Odeme_WNS($saleObj);
+        $this->response = $client->TP_Islem_Odeme_WKS($saleObj);
     }
 
     /**
@@ -74,10 +74,9 @@ class Sale extends Sale3d
      */
     public function parse()
     {
-        if(isset($this->response->TP_Islem_Odeme_WNSResult)){
-            $this->response->TP_Islem_OdemeResult = $this->response->TP_Islem_Odeme_WNSResult;
+        if(isset($this->response->TP_Islem_Odeme_WKSResult)){
+            $this->response->TP_Islem_OdemeResult = $this->response->TP_Islem_Odeme_WKSResult;
         }
         return parent::parse();
     }
-
 }

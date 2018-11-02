@@ -15,8 +15,6 @@ class Sale3d extends Config
     const ERR_TRX = 'ERR_TRX';
     const NONE_3D_FLAG = 'NONSECURE';
     protected $transactionId;
-    public $need3DRedirection = False;
-    protected $urlTo3DRedirection;
 
     /**
      * Sale constructor.
@@ -75,65 +73,27 @@ class Sale3d extends Config
         $this->response = $client->TP_Islem_Odeme($saleObj);
     }
 
+    /**
+     * @return array|bool result array or false on not bad response format
+     */
     public function parse()
     {
-        $result = [];
-        $results = [];
-        $results["Success"] = False;
-        $results["Response"] = [];
-        $results["Response"]['AuthCode'] = self::ERR_TRX;
-        $results["Response"]['OrderId'] = $this->transactionId;
-        $results["Response"]['remoteTransactionId'] = '';
-        $results['Error'] = [];
-        $results['Error']['errMsg'] = self::ERR_TRX;
-        $results['Error']['errCode'] = self::ERR_TRX;
-        $results["Response"]['Bank'] = [];
-        $results["Response"]['Bank']['responseCode'] = '';
-        $results["Response"]['Bank']['responseMsg']  = '';
-        $results["rawData"] = $this->response;
-
-        //response has wrong format
-        if(is_object($this->response) == False)
+        if(is_object($this->response) == False OR !isset($this->response->TP_Islem_OdemeResult->Sonuc))
         {
-            return $result;
+            return False;
         }
-        //request has problem in parameter values
-        elseif($this->response->TP_Islem_OdemeResult->Sonuc == '0')
+        else
         {
-            $results['Error']['errMsg'] = $this->response->TP_Islem_OdemeResult->Sonuc_Str;
-            $results['Error']['errCode'] = $this->response->TP_Islem_OdemeResult->Sonuc;
+            return (array)$this->response->TP_Islem_OdemeResult;
         }
-        //success transaction and no need for 3D secure
-        elseif($this->response->TP_Islem_OdemeResult->Sonuc == '1' AND $this->response->TP_Islem_OdemeResult->Islem_ID > 0 AND $this->response->TP_Islem_OdemeResult->Islem_ID == self::NONE_3D_FLAG)
-        {
-            $results["Success"] = True;
-            $results["Response"]['AuthCode'] = '';
-            $results['Error']['errMsg'] = $this->response->TP_Islem_OdemeResult->Sonuc_Str;
-            $results['Error']['errCode'] = '00';
-            $results["Response"]['remoteTransactionId'] = $this->response->TP_Islem_OdemeResult->Islem_ID;
-        }
-        //success transaction but need 3D secure redirection
-        elseif($this->response->TP_Islem_OdemeResult->Sonuc == '1' AND $this->response->TP_Islem_OdemeResult->Islem_ID > 0 AND $this->response->TP_Islem_OdemeResult->UCD_URL != self::NONE_3D_FLAG)
-        {
-            $results["Success"] = True;
-            $results["Response"]['AuthCode'] = '';
-            $results['Error']['errMsg'] = $this->response->TP_Islem_OdemeResult->Sonuc_Str;
-            $results['Error']['errCode'] = '00';
-            $results["Response"]['remoteTransactionId'] = $this->response->TP_Islem_OdemeResult->Islem_ID;
-            $this->need3DRedirection = True;
-            $this->urlTo3DRedirection = $this->response->TP_Islem_OdemeResult->UCD_URL;
-        }elseif($this->response->TP_Islem_OdemeResult->Sonuc <= 0){
-            $results['Error']['errMsg'] = $this->response->TP_Islem_OdemeResult->Sonuc_Str;
-            $results['Error']['errCode'] = $this->response->TP_Islem_OdemeResult->Sonuc;
-        }
-
-        //unexpected behavior should not happen
-        return $results;
     }
 
-    public function redirectTo3dSecure()
+    /**
+     * @param $urlTo3DRedirection use this function to redirect user to 3d page
+     */
+    public function redirectTo3dSecure($urlTo3DRedirection)
     {
-        $output = '<form action="'.(string)$this->urlTo3DRedirection.'" method="post" name="frm"></form>';
+        $output = '<form action="'.(string)$urlTo3DRedirection.'" method="post" name="frm"></form>';
         $output .= '<script language="JavaScript">document.frm.submit();</script>';
         echo $output;
         exit();

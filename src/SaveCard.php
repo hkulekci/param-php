@@ -10,6 +10,7 @@ use param\paramBasics\KK_Saklama;
 
 class SaveCard extends Config
 {
+    protected $response;//request response
     public $guid;//Key Belonging to Member Workplace
     public $clientCode;//Terminal ID, It will be forwarded by param.
     public $clientUsername;//User Name, It will be forwarded by param.
@@ -44,7 +45,6 @@ class SaveCard extends Config
      * @param string $Data1
      * @param string $Data2
      * @param string $Data3
-     * @return array|bool
      */
     public function send($receiverCardNumber, $cardHolder, $cardNumber,
                          $cardExpMonth, $cardExpYear, $cvc, $Data1='', $Data2='', $Data3='')
@@ -53,12 +53,18 @@ class SaveCard extends Config
 
         $saveCardObj = new KK_Saklama($this->clientCode,$this->clientUsername,$this->clientPassword, $this->guid, $receiverCardNumber, $cardHolder, $cardNumber,
             $cardExpMonth, $cardExpYear, $cvc, $Data1, $Data2, $Data3);
-        $response = $client->KK_Saklama($saveCardObj);
-        if(isset($response->KK_SaklamaResult) == False){
+        $this->response = $client->KK_Saklama($saveCardObj);
+    }
+
+    /**
+     * @return array|bool result array or false on not bad response format
+     */
+    public function parse()
+    {
+        if(isset($this->response->KK_SaklamaResult) == False){
             return False;
         }else{
-            $results = $response->KK_SaklamaResult;
-            return (array)$results;
+            return (array)$this->response->KK_SaklamaResult;;
         }
     }
 
