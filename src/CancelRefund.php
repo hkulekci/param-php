@@ -44,48 +44,18 @@ class CancelRefund extends Config
         $this->response = $client->TP_Islem_Iptal_Iade_Kismi($cancelRefundObj);
     }
 
+    /**
+     * @return array|bool result array or false for bad response format
+     */
     public function parse()
     {
-        $result = [];
-        $results = [];
-        $results["Success"] = False;
-        $results["Response"] = [];
-        $results["Response"]['AuthCode'] = self::ERR_TRX;
-        $results["Response"]['OrderId'] = $this->transactionId;
-        $results["Response"]['remoteTransactionId'] = '';
-        $results['Error'] = [];
-        $results['Error']['errMsg'] = self::ERR_TRX;
-        $results['Error']['errCode'] = self::ERR_TRX;
-        $results["Response"]['Bank'] = [];
-        $results["Response"]['Bank']['responseCode'] = '';
-        $results["Response"]['Bank']['responseMsg'] = '';
-        $results["rawData"] = $this->response;
-
-        //response has wrong format
-        if(is_object($this->response) == False)
+        if(is_object($this->response) == False OR isset($this->response->TP_Islem_Iptal_Iade_KismiResult->Sonuc) == False)
         {
-            return $result;
+            return False;
         }
-        //request has problem in parameter values
-        elseif($this->response->TP_Islem_Iptal_Iade_KismiResult->Sonuc == '0')
+        else
         {
-            $results['Error']['errMsg'] = $this->response->TP_Islem_Iptal_Iade_KismiResult->Sonuc_Str;
-            $results['Error']['errCode'] = $this->response->TP_Islem_Iptal_Iade_KismiResult->Sonuc;
+            return (array)$this->response->TP_Islem_Iptal_Iade_KismiResult;
         }
-        //success transaction and no need for 3D secure
-        elseif($this->response->TP_Islem_Iptal_Iade_KismiResult->Sonuc == '1')
-        {
-            $results["Success"] = True;
-            $results["Response"]['AuthCode'] = '';
-            $results['Error']['errMsg'] = $this->response->TP_Islem_Iptal_Iade_KismiResult->Sonuc_Str;
-            $results['Error']['errCode'] = '00';
-            $results["Response"]['remoteTransactionId'] = '';
-        }elseif($this->response->TP_Islem_Iptal_Iade_KismiResult->Sonuc <= 0){
-            $results['Error']['errMsg'] = $this->response->TP_Islem_Iptal_Iade_KismiResult->Sonuc_Str;
-            $results['Error']['errCode'] = $this->response->TP_Islem_Iptal_Iade_KismiResult->Sonuc;
-        }
-
-        //unexpected behavior should not happen
-        return $results;
     }
 }

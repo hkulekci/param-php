@@ -6,7 +6,6 @@
 
 namespace param\paramBasics;
 
-
 class KK_Saklama
 {
     public $Kart_No;//Card Number Belonging to Member Workplace

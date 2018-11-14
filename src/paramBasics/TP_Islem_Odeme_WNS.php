@@ -6,7 +6,6 @@
 
 namespace param\paramBasics;
 
-
 class TP_Islem_Odeme_WNS extends TP_Islem_Odeme
 {
     public $Islem_Guvenlik_Tip;//set it to NS to have no 3d secure transaction

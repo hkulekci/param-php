@@ -6,7 +6,6 @@
 
 namespace param\paramBasics;
 
-
 class G
 {
     public $CLIENT_CODE;//Terminal ID, It will be forwarded by param.

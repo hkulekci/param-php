@@ -6,7 +6,6 @@
 
 namespace param\paramBasics;
 
-
 class TP_Islem_Sorgulama
 {
     public $GUID;//Key Belonging to Member Workplace

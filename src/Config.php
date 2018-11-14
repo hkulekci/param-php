@@ -6,7 +6,6 @@
 
 namespace param;
 
-
 class Config
 {
     const TEST_SERVICE_URL = 'https://dmzws.ew.com.tr/turkpos.ws/service_turkpos_test.asmx?wsdl';

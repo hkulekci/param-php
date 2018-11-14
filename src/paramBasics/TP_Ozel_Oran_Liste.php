@@ -6,7 +6,6 @@
 
 namespace param\paramBasics;
 
-
 class TP_Ozel_Oran_Liste
 {
     public $GUID;//Key Belonging to Member Workplace

@@ -6,7 +6,6 @@
 
 namespace param\paramBasics;
 
-
 class SHA2B64
 {
     public $G;//control and security object

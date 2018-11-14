@@ -6,7 +6,6 @@
 
 namespace param\paramBasics;
 
-
 class TP_Islem_Iptal_Iade_Kismi
 {
     public $G;//control and security object

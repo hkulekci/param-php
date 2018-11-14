@@ -6,7 +6,6 @@
 
 namespace param\paramBasics;
 
-
 class TP_Islem_Odeme
 {
     public $SanalPOS_ID;//is the VirtualPOS_ID value of the Card Brand selected from the customer method.

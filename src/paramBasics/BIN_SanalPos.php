@@ -4,13 +4,12 @@
  * Date: 10/18/2018
  */
 
-
 namespace param\paramBasics;
 
 class BIN_SanalPos
 {
     public $G;//control and security object
-    public $BIN;//All BIN codes return if left blank. If posted full BIN returns information about the code.
+    public $BIN;//CArd BIN
 
     /**
      * BIN_SanalPos constructor.

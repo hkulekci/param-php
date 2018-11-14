@@ -8,7 +8,6 @@ namespace param;
 
 use param\paramBasics\KK_Kart_Sil;
 
-
 class DeleteCard extends Config
 {
     protected $response;//request response

@@ -74,7 +74,7 @@ class Sale3d extends Config
     }
 
     /**
-     * @return array|bool result array or false on not bad response format
+     * @return array|bool result array or false for bad response format
      */
     public function parse()
     {

@@ -6,10 +6,8 @@
 
 namespace param\paramBasics;
 
-
 class KK_Kart_Sil
 {
-
     /**
      * TP_Islem_Odeme constructor.
      * @param $CLIENT_CODE: Terminal ID, It will be forwarded by param.

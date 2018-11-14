@@ -1,13 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: mohmm
+ * Created by Payfull.
  * Date: 10/17/2018
- * Time: 5:16 PM
  */
 
 namespace param;
-
 
 use param\paramBasics\TP_Islem_Odeme_WKS;
 use param\paramBasics\SHA2B64;
