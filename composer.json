@@ -1,0 +1,18 @@
+{
+    "name": "hkulekci/param-php",
+    "description": "Param API - PHP SDK",
+    "type": "library",
+    "license": "GPL-V3",
+    "authors": [
+        {
+            "name": "Haydar KULEKCI",
+            "email": "haydarkulekci@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "param\\": "src/"
+        }
+    }
+}
