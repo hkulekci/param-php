@@ -10,7 +10,7 @@ use param\paramBasics\TP_Islem_Sorgulama;
 
 class TransactionQuery extends Config
 {
-    protected $response;//request response
+    protected $response; //request response
     const ERR_TRX = 'ERR_TRX';
     protected $transactionId;
 
