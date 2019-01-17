@@ -6,7 +6,7 @@
 
 namespace param\paramBasics;
 
-class TP_Ozel_Oran_Liste
+class TP_Ozel_Oran_SK_Liste
 {
     public $GUID;//Key Belonging to Member Workplace
     public $G;//control and security object
