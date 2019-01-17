@@ -74,13 +74,16 @@ class Sale3d extends Config
     }
 
     /**
-     * @return array|bool result array or false for bad response format
+     * @return array result array
      */
     public function parse()
     {
         if(is_object($this->response) == False OR !isset($this->response->TP_Islem_OdemeResult->Sonuc))
         {
-            return False;
+            return [
+                'Sonuc' => -2,
+                'Sonuc_Str' => 'Param response has wrong format',
+            ];
         }
         else
         {

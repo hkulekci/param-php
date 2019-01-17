@@ -42,6 +42,9 @@ class TransactionQuery extends Config
         $this->response = $client->TP_Islem_Sorgulama($queryObj);
     }
 
+    /**
+     * @return array result array
+     */
     public function parse()
     {
         $result = [
@@ -60,7 +63,10 @@ class TransactionQuery extends Config
         //response has wrong format
         if(is_object($this->response) == False)
         {
-            return $result;
+            return [
+                'Sonuc' => -2,
+                'Sonuc_Str' => 'Param response has wrong format',
+            ];
         }
         //query problem or transaction not found
         elseif($this->response->TP_Islem_SorgulamaResult->Sonuc == '0')

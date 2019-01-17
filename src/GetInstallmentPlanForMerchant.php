@@ -36,11 +36,17 @@ class GetInstallmentPlanForMerchant extends Config
         $this->response = $client->TP_Ozel_Oran_Liste($installmentsListObj);
     }
 
+    /**
+     * @return array result array
+     */
     public function parse()
     {
         $results = [];
         if(isset($this->response->TP_Ozel_Oran_ListeResult) == False){
-            throw new Exception('Param response format is not expected');
+            return [
+                'Sonuc' => -2,
+                'Sonuc_Str' => 'Param response has wrong format',
+            ];
         }
         $q1 = $this->response->TP_Ozel_Oran_ListeResult;
         $Sonuc = $q1->{'Sonuc'};

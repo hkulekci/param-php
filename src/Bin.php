@@ -37,11 +37,17 @@ class Bin extends Config
         $this->response = $client->BIN_SanalPos($binObj);
     }
 
+    /**
+     * @return array result array
+     */
     public function parse()
     {
         $results = [];
         if(isset($this->response->BIN_SanalPosResult) == False){
-            throw new Exception('Param response format is not expected');
+            return [
+                'Sonuc' => -2,
+                'Sonuc_Str' => 'Param response has wrong format',
+            ];
         }
 
         $q1 = $this->response->BIN_SanalPosResult;

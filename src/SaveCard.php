@@ -57,12 +57,15 @@ class SaveCard extends Config
     }
 
     /**
-     * @return array|bool result array or false on not bad response format
+     * @return array result array
      */
     public function parse()
     {
         if(isset($this->response->KK_SaklamaResult) == False){
-            return False;
+            return [
+                'Sonuc' => -2,
+                'Sonuc_Str' => 'Param response has wrong format',
+            ];
         }else{
             return (array)$this->response->KK_SaklamaResult;;
         }

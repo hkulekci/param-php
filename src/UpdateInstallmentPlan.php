@@ -28,7 +28,7 @@ class UpdateInstallmentPlan extends Config
     public $MO_12;//12rd Installment Rate
 
     /**
-     * GetInstallmentPlanForMerchant constructor.
+     * UpdateInstallmentPlan constructor.
      * @param $clientCode: Terminal ID, It will be forwarded by param.
      * @param $clientUsername: User Name, It will be forwarded by param.
      * @param $clientPassword: Password, It will be forwarded by param.
@@ -92,12 +92,15 @@ class UpdateInstallmentPlan extends Config
     }
 
     /**
-     * @return array|bool result array or false on not bad response format
+     * @return array result array
      */
     public function parse()
     {
         if(isset($this->response->TP_Ozel_Oran_SK_GuncelleResult) == False){
-            return False;
+            return [
+                'Sonuc' => -2,
+                'Sonuc_Str' => 'Param response has wrong format',
+            ];
         }else{
             return (array)$this->response->TP_Ozel_Oran_SK_GuncelleResult;
         }
