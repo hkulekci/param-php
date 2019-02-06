@@ -29,7 +29,3 @@ include_once('paramBasics/TP_Ozel_Oran_SK_Liste.php');
 include_once('paramBasics/TP_Ozel_Oran_SK_Guncelle.php');
 include_once('paramBasics/KK_Kart_Sil.php');
 include_once('paramBasics/G.php');
-
-
-git remote set-url origin git@github.com:PARAMPOS/param-php.git
-git remote set-url origin https://PAYFULL-ODEME:password@github.com/PARAMPOS/param-php.git
