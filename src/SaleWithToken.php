@@ -6,7 +6,7 @@
 
 namespace param;
 
-use param\paramBasics\TP_Islem_Odeme_WKS;
+use param\paramBasics\KS_Tahsilat;
 use param\paramBasics\SHA2B64;
 
 class SaleWithToken extends Sale
@@ -21,7 +21,7 @@ class SaleWithToken extends Sale
      */
     public function __construct($clientCode, $clientUsername, $clientPassword, $guid, $mode)
     {
-        parent::__construct($clientCode, $clientUsername, $clientPassword, $guid, $mode);
+        parent::__construct($clientCode, $clientUsername, $clientPassword, $guid, $mode, true);
     }
 
     /**
@@ -47,23 +47,55 @@ class SaleWithToken extends Sale
      * @param $cvc: CVC Code
      * @param $use3d: use 3d secure 1/0
      */
-    public function sendWithToken($vPosId,$receiverCardNumber,$savedCardGuid,
-                         $cardHolderPhone,$failUrl,$successURL,$orderId,
-                         $orderDescription,$installments,$total,$generalTotal,$transactionId,$ipAddress,
-                         $referenceUrl,$extraData1,$extraData2,$extraData3,$extraData4,$cvc,$use3d)
+    public function sendWithToken(
+        $vPosId,
+        $cardHolder,
+        $savedCardGuid,
+        $cvc,
+        $cardHolderPhone,
+        $failUrl,
+        $successURL,
+        $orderId,
+        $orderDescription,
+        $installments,
+        $total,
+        $generalTotal,
+        $transactionId,
+        $ipAddress,
+        $referenceUrl,
+        $use3d
+    )
     {
         $client = new \SoapClient($this->serviceUrl);
-        $use3d = ($use3d == True)?'NS':'';
+        $use3d = ($use3d == True)?'3D':'NS';
 
-        $saleObj = new TP_Islem_Odeme_WKS($this->clientCode,$this->clientUsername,$this->clientPassword,$vPosId,$this->guid,$receiverCardNumber,
-            $savedCardGuid,$cardHolderPhone,$failUrl,$successURL,$orderId,
-            $orderDescription,$installments,$total,$generalTotal,$transactionId,$ipAddress,
-            $referenceUrl,$extraData1,$extraData2,$extraData3,$extraData4,$cvc,$use3d);
+        $saleObj = new KS_Tahsilat(
+            $this->clientCode,
+            $this->clientUsername,
+            $this->clientPassword,
+            $this->guid,
+            $vPosId,
+            $cardHolder,
+            $savedCardGuid,
+            $cvc,
+            $cardHolderPhone,
+            $failUrl,
+            $successURL,
+            $orderId,
+            $orderDescription,
+            $installments,
+            $total,
+            $generalTotal,
+            $transactionId,
+            $ipAddress,
+            $referenceUrl,
+            $use3d
+        );
 
-        $securityString = $this->clientCode.$this->guid.$vPosId.$installments.$total.$generalTotal.$orderId.$failUrl.$successURL;
-        $shaString = new SHA2B64($securityString, $this->clientCode,$this->clientUsername,$this->clientPassword);
-        $saleObj->Islem_Hash = $client->SHA2B64($shaString)->SHA2B64Result;
-        $this->response = $client->TP_Islem_Odeme_WKS($saleObj);
+        // $securityString = $this->clientCode.$this->guid.$vPosId.$installments.$total.$generalTotal.$orderId.$failUrl.$successURL;
+        // $shaString = new SHA2B64($securityString,$this->clientCode,$this->clientUsername,$this->clientPassword);
+        // $saleObj->Islem_Hash = $client->SHA2B64($shaString)->SHA2B64Result;
+        $this->response = $client->KS_Tahsilat($saleObj);
     }
 
     /**
@@ -71,17 +103,20 @@ class SaleWithToken extends Sale
      */
     public function parse()
     {
-        if(is_object($this->response) == False OR !isset($this->response->TP_Islem_Odeme_WKSResult->Sonuc))
+        if(is_object($this->response) == False OR !isset($this->response->KS_TahsilatResult->Sonuc))
         {
             return [
-                'Sonuc' => -2,
-                'Sonuc_Str' => 'Param response has wrong format',
+                'Sonuc' => -1,
+                'Sonuc_Str' => $this->response->KS_TahsilatResult->Sonuc_Str,
             ];
         }
         else{
-            $this->response->TP_Islem_OdemeResult = $this->response->TP_Islem_Odeme_WKSResult;
+            return [
+                'Sonuc' => $this->response->KS_TahsilatResult->Sonuc,
+                'Islem_ID' => $this->response->KS_TahsilatResult->Islem_ID,
+                'UCD_URL' => $this->response->KS_TahsilatResult->UCD_URL,
+                'Sonuc_Str' => $this->response->KS_TahsilatResult->Sonuc_Str,
+            ];
         }
-
-        return parent::parse();
     }
 }

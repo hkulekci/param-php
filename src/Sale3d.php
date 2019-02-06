@@ -23,10 +23,11 @@ class Sale3d extends Config
      * @param $clientPassword: Password, It will be forwarded by param.
      * @param $guid: Key Belonging to Member Workplace
      * @param $mode: string value TEST/PROD
+     * @param $newAPI: true/false for API endpoints
      */
-    public function __construct($clientCode, $clientUsername, $clientPassword, $guid, $mode)
+    public function __construct($clientCode, $clientUsername, $clientPassword, $guid, $mode, $newAPI = false)
     {
-        parent::__construct($clientCode, $clientUsername, $clientPassword, $guid, $mode);
+        parent::__construct($clientCode, $clientUsername, $clientPassword, $guid, $mode, $newAPI);
     }
 
     /**

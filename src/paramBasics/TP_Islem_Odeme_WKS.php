@@ -25,10 +25,6 @@ class TP_Islem_Odeme_WKS
     public $Islem_ID;//Single ID except the Sipariş Id that belongs to transaction, optional.
     public $IPAdr;//IP Address
     public $Ref_URL;//Url of page where payment is made
-    public $Data1;//Extra Space 1
-    public $Data2;//Extra Space 2
-    public $Data3;//Extra Space 3
-    public $Data4;//Extra Space 4
     public $Data5;//CVC code
     public $G;//control and security object
 
@@ -59,7 +55,7 @@ class TP_Islem_Odeme_WKS
      * @param $kkCvc: cvc code
      * @param $Islem_Guvenlik_Tip: NS (NonSecure) or 3D will sent
      */
-    public function __construct($CLIENT_CODE,$CLIENT_USERNAME,$CLIENT_PASSWORD,$sPosId,$guid,$KS_Kart_No,$KK_GUID,$kkSahibiGsm,$hataUrl,$basariliUrl,$siparisId,$siparisAciklama,$taksit,$islemtutar,$toplamTutar,$islemid,$ipAdr,$RefUrl,$dataBir,$dataIki,$dataUc,$dataDort,$kkCvc,$Islem_Guvenlik_Tip)
+    public function __construct($CLIENT_CODE,$CLIENT_USERNAME,$CLIENT_PASSWORD,$sPosId,$guid,$KS_Kart_No,$KK_GUID,$kkSahibiGsm,$hataUrl,$basariliUrl,$siparisId,$siparisAciklama,$taksit,$islemtutar,$toplamTutar,$islemid,$ipAdr,$RefUrl,$kkCvc,$Islem_Guvenlik_Tip)
     {
         $this->SanalPOS_ID = $sPosId;
         $this->GUID = $guid;
@@ -77,11 +73,6 @@ class TP_Islem_Odeme_WKS
         $this->Islem_ID = $islemid;
         $this->IPAdr = $ipAdr;
         $this->Ref_URL = $RefUrl;
-        $this->Data1 = $dataBir;
-        $this->Data2 = $dataIki;
-        $this->Data3 = $dataUc;
-        $this->Data4 = $dataDort;
-        $this->Data5 = $kkCvc;
         $this->Islem_Guvenlik_Tip = $Islem_Guvenlik_Tip;
         $this->G = new G($CLIENT_CODE, $CLIENT_USERNAME , $CLIENT_PASSWORD);
     }

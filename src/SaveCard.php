@@ -6,7 +6,7 @@
 
 namespace param;
 
-use param\paramBasics\KK_Saklama;
+use param\paramBasics\KS_Kart_Ekle;
 
 class SaveCard extends Config
 {
@@ -32,7 +32,7 @@ class SaveCard extends Config
      */
     public function __construct($clientCode, $clientUsername, $clientPassword, $guid, $mode)
     {
-        parent::__construct($clientCode, $clientUsername, $clientPassword, $guid, $mode);
+        parent::__construct($clientCode, $clientUsername, $clientPassword, $guid, $mode, true);
     }
 
     /**
@@ -42,18 +42,15 @@ class SaveCard extends Config
      * @param $cardExpMonth: Last 2 digit Expiration month
      * @param $cardExpYear: 4 digit Expiration Year
      * @param $cvc: CVC Code
-     * @param string $Data1
-     * @param string $Data2
-     * @param string $Data3
      */
-    public function send($receiverCardNumber, $cardHolder, $cardNumber,
-                         $cardExpMonth, $cardExpYear, $cvc, $Data1='', $Data2='', $Data3='')
+    public function send($cardHolder, $cardNumber,
+                         $cardExpMonth, $cardExpYear, $cvc)
     {
         $client = new \SoapClient($this->serviceUrl);
 
-        $saveCardObj = new KK_Saklama($this->clientCode,$this->clientUsername,$this->clientPassword, $this->guid, $receiverCardNumber, $cardHolder, $cardNumber,
-            $cardExpMonth, $cardExpYear, $cvc, $Data1, $Data2, $Data3);
-        $this->response = $client->KK_Saklama($saveCardObj);
+        $saveCardObj = new KS_Kart_Ekle($this->clientCode,$this->clientUsername,$this->clientPassword, $this->guid, $cardHolder, $cardNumber,
+            $cardExpMonth, $cardExpYear, $cvc);
+        $this->response = $client->KS_Kart_Ekle($saveCardObj);
     }
 
     /**
@@ -61,13 +58,13 @@ class SaveCard extends Config
      */
     public function parse()
     {
-        if(isset($this->response->KK_SaklamaResult) == False){
+        if(isset($this->response->KS_Kart_EkleResult) == False){
             return [
                 'Sonuc' => -2,
                 'Sonuc_Str' => 'Param response has wrong format',
             ];
         }else{
-            return (array)$this->response->KK_SaklamaResult;;
+            return (array)$this->response->KS_Kart_EkleResult;
         }
     }
 

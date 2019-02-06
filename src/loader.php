@@ -8,6 +8,7 @@ include_once('GetInstallmentPlanForMerchant.php');
 include_once('GetInstallmentPlanForUser.php');
 include_once('Sale3d.php');
 include_once('Sale.php');
+include_once('SaleWithSavedCard.php');
 include_once('SaleWithToken.php');
 include_once('SaveCard.php');
 include_once('TransactionQuery.php');
@@ -15,7 +16,8 @@ include_once('DeleteCard.php');
 include_once('UpdateInstallmentPlan.php');
 
 include_once('paramBasics/BIN_SanalPos.php');
-include_once('paramBasics/KK_Saklama.php');
+include_once('paramBasics/KS_Kart_Ekle.php');
+include_once('paramBasics/KS_Tahsilat.php');
 include_once('paramBasics/SHA2B64.php');
 include_once('paramBasics/TP_Islem_Iptal_Iade_Kismi.php');
 include_once('paramBasics/TP_Islem_Odeme.php');
@@ -29,3 +31,5 @@ include_once('paramBasics/KK_Kart_Sil.php');
 include_once('paramBasics/G.php');
 
 
+git remote set-url origin git@github.com:PARAMPOS/param-php.git
+git remote set-url origin https://PAYFULL-ODEME:password@github.com/PARAMPOS/param-php.git
