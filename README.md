@@ -152,6 +152,7 @@ for paying with saved credit card
      * @param ipAddress: IP Address
      * @param referenceUrl: Url of page where payment is made
      * @param use3d: use 3d secure 1/0
+     */
     $saleWTOpj->sendWithToken(
         $SanalPOS_ID,
         $kkSahibi,
