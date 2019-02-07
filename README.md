@@ -87,6 +87,13 @@ For saving card you can use this function note saving card and pay by saved card
 
 for saving card 
 ```php
+    /**
+     * @param $CLIENT_CODE: Terminal ID, It will be forwarded by param.
+     * @param $CLIENT_USERNAME: User Name, It will be forwarded by param.
+     * @param $CLIENT_PASSWORD: Password, It will be forwarded by param.
+     * @param $GUID: Key Belonging to Member Workplace
+     * @param $MODE: PROD/TEST
+     **/
      $savCardOpj=new SaveCard(
         $config->CLIENT_CODE,
         $config->CLIENT_USERNAME,
@@ -94,6 +101,13 @@ for saving card
         $config->guid,
         $testMode?"PROD":"TEST"
     );
+    /**
+     * @param $cardHolder: Credit Card Holder
+     * @param $cardNumber: Credit Card Number
+     * @param $cardExpMonth: Last 2 digit Expiration month
+     * @param $cardExpYear: 4 digit Expiration Year
+     * @param $cvc: CVC Code
+     */
     $savCardOpj->send(
         $cardHolder,
         $cardNumber,
@@ -106,6 +120,13 @@ for saving card
 it give u as a response the card guid and you can use it to pay with it
 for paying with saved credit card 
 ```php
+    /**
+     * @param $CLIENT_CODE: Terminal ID, It will be forwarded by param.
+     * @param $CLIENT_USERNAME: User Name, It will be forwarded by param.
+     * @param $CLIENT_PASSWORD: Password, It will be forwarded by param.
+     * @param $GUID: Key Belonging to Member Workplace
+     * @param $MODE: PROD/TEST
+     **/
     $saleWTOpj = new SaleWithToken(
         $config->CLIENT_CODE,
         $config->CLIENT_USERNAME,
@@ -113,6 +134,24 @@ for paying with saved credit card
         $config->guid,
         $testMode?"PROD":"TEST"
     );
+    /**
+     * send sale with card token transaction
+     * @param vPosId: is the VirtualPOS_ID value of the Card Brand selected from the customer method.
+     * @param cardHolder: card holder full name
+     * @param savedCardGuid: GUID value that returns from KK_Saklama method
+     * @param cardHolderPhone: Credit Card holder GSM No, Without zero at the beginning (5xxxxxxxxx)
+     * @param cvc: CVC Code
+     * @param failUrl: If the payment fails, page address to be redirected to
+     * @param successURL: If the payment is successful, page address to be redirected to
+     * @param orderId: Singular ID for Order-specific. If you have sent before this value the system is new Assign order_ID. As a result               of this The order_ID is returned.
+     * @param orderDescription: Order Description
+     * @param installments: Selected number of installments. Send 1 for one installment.
+     * @param total: Order Amount, (only a comma with Kuruş format 1000,50)
+     * @param generalTotal: Commission Including Order Amount, (only a comma with Kuruş format 1000,50)
+     * @param transactionId: Single ID except the Sipariş Id that belongs to transaction, optional.
+     * @param ipAddress: IP Address
+     * @param referenceUrl: Url of page where payment is made
+     * @param use3d: use 3d secure 1/0
     $saleWTOpj->sendWithToken(
         $SanalPOS_ID,
         $kkSahibi,
