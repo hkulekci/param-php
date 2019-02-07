@@ -83,5 +83,55 @@ require_once('/path/to/param-php/src/loader.php');
     //parsing the results
     $paramResponse = $saleObj->parse();                    
 ```
+For saving card you can use this function note saving card and pay by saved card  using different end points  
 
-
+for saving card 
+```php
+     $savCardOpj=new SaveCard(
+        $config->CLIENT_CODE,
+        $config->CLIENT_USERNAME,
+        $config->CLIENT_PASSWORD,
+        $config->guid,
+        $testMode?"PROD":"TEST"
+    );
+    $savCardOpj->send(
+        $cardHolder,
+        $cardNumber,
+        $cardMonth,
+        $cardYear,
+        $cardCVC
+    );
+    $result=$savCardOpj->parse();
+```
+it give u as a response the card guid and you can use it to pay with it
+for paying with saved credit card 
+```php
+    $saleWTOpj = new SaleWithToken(
+        $config->CLIENT_CODE,
+        $config->CLIENT_USERNAME,
+        $config->CLIENT_PASSWORD,
+        $config->guid,
+        $testMode?"PROD":"TEST"
+    );
+    $saleWTOpj->sendWithToken(
+        $SanalPOS_ID,
+        $kkSahibi,
+        $KK_GUID,
+        $kkCvc,
+        $kkSahibiGsm,
+        $hataUrl,
+        $basariliUrl,
+        $siparisId,
+        $siparisAciklama,
+        $taksit,
+        $islemtutar,
+        $toplamTutar,
+        $islemid,
+        $ipAdr,
+        $odemeUrl,
+        $use3d,
+    );
+    $result = $saleWTOpj->parse();
+    //$result ['UCD_URL'] 
+```
+this property you will redirect the browser to it for 3d page 
