@@ -59,15 +59,17 @@ class Bin extends Config
         $xmlStr = str_replace(array("diffgr:","msdata:"),'', $xmlStr);
         $data = @simplexml_load_string($xmlStr);
         $list = $data->diffgram->NewDataSet;
-        foreach ($list->Temp as $card){
-            $card = (array)$card;
-            $results[] = [
-                'bin' => $card['BIN'],
-                'posId' => $card['SanalPOS_ID'],
-                'posName' => $card['Kart_Banka'] ?? '',
-            ];
-            if($this->bin != ''){
-                return $results[0];
+        if ($list->Temp && is_array($list->Temp)) {
+            foreach ($list->Temp as $card){
+                $card = (array)$card;
+                $results[] = [
+                    'bin' => $card['BIN'],
+                    'posId' => $card['SanalPOS_ID'],
+                    'posName' => $card['Kart_Banka'] ?? '',
+                ];
+                if($this->bin != ''){
+                    return $results[0];
+                }
             }
         }
         return $results;
