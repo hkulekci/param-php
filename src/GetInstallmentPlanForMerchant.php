@@ -28,7 +28,6 @@ class GetInstallmentPlanForMerchant extends Config
     /**
      * send request to get the installments plan list for Merchant
      * @return array|bool
-     * @throws \SoapFault
      */
     public function send()
     {

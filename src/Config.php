@@ -10,7 +10,7 @@ class Config
 {
     const TEST_SERVICE_URL_NEW = 'http://test-dmz.ew.com.tr:8080/out.ws/service_ks.asmx?wsdl';
     const PROD_SERVICE_URL_NEW = 'https://dmzws.ew.com.tr/out.ws/service_ks.asmx?wsdl';
-    const TEST_SERVICE_URL = 'https://dmzws.ew.com.tr/turkpos.ws/service_turkpos_test.asmx?wsdl';
+    const TEST_SERVICE_URL = 'http://test-dmz.ew.com.tr:8080/turkpos.ws/service_turkpos_test.asmx?wsdl';
     const PROD_SERVICE_URL = 'https://dmzws.ew.com.tr/turkpos.ws/service_turkpos_prod.asmx?wsdl';
     const TEST_MODE_FLAG = 'TEST';
 
